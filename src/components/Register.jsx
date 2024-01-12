@@ -1,6 +1,6 @@
-// Register.js
 
 import React, { useState } from 'react';
+import {  registerUser } from '../auth/auth';
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -8,7 +8,6 @@ const Register = () => {
     password: '',
     name: '',
     role: 'patient',
-    spec: '',
     medHistory: '',
   });
 
@@ -20,10 +19,10 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Add your registration logic here
-    console.log('Submitted:', user);
+    const data = await  registerUser(user)
+    console.log('Submitted:', data);
   };
 
   return (
@@ -75,39 +74,6 @@ const Register = () => {
             required
           />
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="role" className="block text-gray-600 text-sm font-medium mb-2">
-            Role
-          </label>
-          <select
-            id="role"
-            name="role"
-            value={user.role}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-          >
-            <option value="patient">Patient</option>
-            <option value="doctor">Doctor</option>
-          </select>
-        </div>
-
-        {user.role === 'doctor' ? (
-          <div className="mb-4">
-            <label htmlFor="spec" className="block text-gray-600 text-sm font-medium mb-2">
-              Specialization
-            </label>
-            <input
-              type="text"
-              id="spec"
-              name="spec"
-              value={user.spec}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-        ) : (
           <div className="mb-4">
             <label htmlFor="medHistory" className="block text-gray-600 text-sm font-medium mb-2">
               Medical History
@@ -121,7 +87,6 @@ const Register = () => {
               rows="4"
             ></textarea>
           </div>
-        )}
 
         <button
           type="submit"

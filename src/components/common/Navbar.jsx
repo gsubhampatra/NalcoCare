@@ -1,34 +1,33 @@
-'use client'
-
-import React from 'react'
-import { Menu, X } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { LogOut, Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const menuItems = [
   {
-    name: 'Home',
-    href: '/',
+    name: "Home",
+    href: "/",
   },
   {
-    name: 'About',
-    href: '#about',
+    name: "About",
+    href: "#about",
   },
   {
-    name: 'Contact',
-    href: '#contact',
+    name: "Contact",
+    href: "#contact",
   },
-]
+];
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { user, logout } = useAuth();
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <div className="relative w-full bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
+      <div className="flex items-center justify-between px-4 py-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="inline-flex items-center space-x-2">
           <span>
             <svg
@@ -61,39 +60,53 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="hidden lg:block">
-          <Link
-            to={'/login'}
-            className="rounded-md mr-2 bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-          >
-            Register
-          </Link>
+          {user ? (
+            <>
+              <button
+                onClick={() => {
+                  logout();
+                }}
+                className="px-3 py-2 mr-2 text-sm font-semibold text-white bg-black rounded-md shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to={"/login"}
+                className="px-3 py-2 mr-2 text-sm font-semibold text-white bg-black rounded-md shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="px-3 py-2 text-sm font-semibold text-white bg-black rounded-md shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
         <div className="lg:hidden">
-          <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
+          <Menu onClick={toggleMenu} className="w-6 h-6 cursor-pointer" />
         </div>
         {isMenuOpen && (
-          <div className="absolute inset-x-0 top-0 z-50 origin-top-right transform p-2 transition lg:hidden">
-            <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="px-5 pb-6 pt-5">
+          <div className="absolute inset-x-0 top-0 z-50 p-2 transition origin-top-right transform lg:hidden">
+            <div className="bg-white divide-y-2 rounded-lg shadow-lg divide-gray-50 ring-1 ring-black ring-opacity-5">
+              <div className="px-5 pt-5 pb-6">
                 <div className="flex items-center justify-between">
                   <div className="inline-flex items-center space-x-2">
-
                     <span className="font-bold">Nalco Care</span>
                   </div>
                   <div className="-mr-2">
                     <button
                       type="button"
                       onClick={toggleMenu}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-gray-100 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                     >
                       <span className="sr-only">Close menu</span>
-                      <X className="h-6 w-6" aria-hidden="true" />
+                      <X className="w-6 h-6" aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -103,7 +116,7 @@ const Navbar = () => {
                       <a
                         key={item.name}
                         href={item.href}
-                        className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50"
+                        className="flex items-center p-3 -m-3 text-sm font-semibold rounded-md hover:bg-gray-50"
                       >
                         <span className="ml-3 text-base font-medium text-gray-900">
                           {item.name}
@@ -112,28 +125,27 @@ const Navbar = () => {
                     ))}
                   </nav>
                 </div>
-                <div className='mt-4 space-x-2'>
+                <div className="mt-4 space-x-2">
                   <Link
                     to="/login"
-                    className="mt-4 w-full sm:w-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="mt-4 w-full sm:w-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                   >
                     Register
                   </Link>
                 </div>
-
               </div>
             </div>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

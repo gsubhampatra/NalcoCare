@@ -5,10 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const AdminDashboard = () => {
   const items = [
-    {
-      name: "Register Doctor",
-      path: "/admin/register-doctor",
-    },
+  
     {
       name: "All Doctors",
       path: "/admin/all-doctors",
@@ -21,14 +18,11 @@ const AdminDashboard = () => {
       name: "All Patients",
       path: "/admin/all-patients",
     },
-    {
-      name: "Create Appointment",
-      path: "/admin/create-appointment",
-    },
+  
   ];
-
+  
   const { user } = useAuth();
-  if (user?.user?.role !== "admin") {
+  if (user?.role !== "admin") {
     return (
       <>
         <h1 className="text-2xl font-semibold text-center mt-8">

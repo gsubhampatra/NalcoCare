@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Loading } from "../common";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -30,9 +31,9 @@ const Register = () => {
     const data = await register(user);
     setUserdata(data);
     setLoading(false);
-
-    console.log("Submitted:", data);
-    navigate("/login");
+    setUser({});
+    toast.success("Registration successful");
+    navigate(`/${data.role}`);
   };
   if (loading) {
     return (
@@ -45,6 +46,14 @@ const Register = () => {
   return (
     <>
       <div className="container mx-auto mt-8">
+        <div className="flex flex-row items-center justify-center">
+          <Link
+            to="/register-doctor"
+            className=" text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center me-2 mb-2  "
+          >
+            Register as Doctor
+          </Link>
+        </div>
         <form
           onSubmit={handleSubmit}
           className="max-w-md p-8 mx-auto bg-white rounded-md shadow-md"
@@ -127,7 +136,7 @@ const Register = () => {
           >
             Register
           </button>
-          <Link to="/login" className="text-blue-500 text-sm hover:underline">
+          <Link to="/login" className="text-sm text-blue-500 hover:underline">
             Already have an account? Login
           </Link>
         </form>

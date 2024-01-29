@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Loading } from "../common";
+import { useNavigate } from "react-router-dom";
 
 const RegisterDoctor = () => {
   const { register } = useAuth();
-  const [userdata, setUserdata] = useState({});
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -25,8 +26,8 @@ const RegisterDoctor = () => {
     e.preventDefault();
     setLoading(true);
     const data = await register(user);
-    setUserdata(data);
     setLoading(false);
+    navigate(`/${data.role}`);
     console.log("Submitted:", data);
     setUser({});
   };
@@ -125,11 +126,6 @@ const RegisterDoctor = () => {
           </button>
         </form>
       </div>
-      {userdata && (
-        <div>
-          <h1>{userdata?.patient?.name} </h1>
-        </div>
-      )}
     </>
   );
 };

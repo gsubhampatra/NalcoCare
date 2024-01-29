@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <div className="relative w-full bg-white">
       <div className="flex items-center justify-between px-4 py-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="inline-flex items-center space-x-2">
+        <Link to="/" className="inline-flex items-center space-x-2">
           <span>
             <svg
               width="30"
@@ -44,7 +44,7 @@ const Navbar = () => {
             </svg>
           </span>
           <span className="font-bold">Nalco Care</span>
-        </div>
+        </Link>
         <div className="hidden lg:block">
           <ul className="inline-flex space-x-8">
             {menuItems.map((item) => (
@@ -62,14 +62,21 @@ const Navbar = () => {
         <div className="hidden lg:block">
           {user ? (
             <>
-              <button
+              <Link
+                to="/"
                 onClick={() => {
                   logout();
                 }}
                 className="px-3 py-2 mr-2 text-sm font-semibold text-white bg-black rounded-md shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 Log out
-              </button>
+              </Link>
+              <Link
+                to={`/${user.role}`}
+                className="px-3 py-2 mr-2 text-sm font-semibold text-white bg-black rounded-md shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Dashboard
+              </Link>
             </>
           ) : (
             <>
@@ -126,18 +133,40 @@ const Navbar = () => {
                   </nav>
                 </div>
                 <div className="mt-4 space-x-2">
-                  <Link
-                    to="/login"
-                    className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                  >
-                    Register
-                  </Link>
+                  {user ? (
+                    <>
+                      <Link
+                        to="/"
+                        onClick={() => {
+                          logout();
+                        }}
+                        className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      >
+                        Log out
+                      </Link>
+                      <Link
+                        to={`/${user.role}`}
+                        className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      >
+                        Dashboard
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="/register"
+                        className="w-full px-3 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm sm:w-auto hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      >
+                        Register
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

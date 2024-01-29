@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Loading from "../common/Loading";
+import toast from "react-hot-toast";
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -23,16 +24,14 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     const data = await login(user);
-    console.log("Submitted:", data);
-    setUser({});
-    setLoading(false);
-    if (data?.patient) {
-      navigate("/patient");
-    } else if (data?.doctor) {
-      navigate("/doctor");
-    } else if (data?.user) {
-      navigate("/admin");
+    if (data.error) {
+      toast.error("Invalid credentials");
+      setLoading(false);
+      return;
     }
+    setLoading(false);
+    toast.success("Login successful");
+    navigate(`/${data?.role}`);
   };
 
   if (loading) {

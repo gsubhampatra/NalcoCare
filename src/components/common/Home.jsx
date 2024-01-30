@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "flowbite-react";
 import { heroImages } from "../../data/data";
+import AllDoctors from "../admin/AllDoctors";
 
 const Home = () => {
   return (
@@ -10,6 +11,8 @@ const Home = () => {
           <img key={index} src={item.img} alt={item.alt} />
         ))}
       </Carousel>
+      <AllDoctors />
+     
     </div>
   );
 };

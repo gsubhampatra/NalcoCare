@@ -7,7 +7,7 @@ import {
   getDoctorAppointments,
   getUser,
   getPatientAppointments,
-  deleteEle
+  deleteEle,
 } from "../data/api";
 import toast from "react-hot-toast";
 
@@ -115,16 +115,22 @@ const DataProvider = ({ children }) => {
     );
   };
 
-  const delIt = async(id,ele)=>{
+  const delIt = async (id, ele) => {
     try {
-      const item = await deleteEle(id,ele);
+      const item = await deleteEle(id, ele);
       toast.success(item.message || "Deleted Successfully");
-       console.log(item);
+      if (ele === "patient") {
+        await fetchPatient();
+      } else if (ele === "doctor") {
+        await fetchDoctor();
+      } else if (ele === "appointment") {
+        await fetchAppointment();
+      }
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Something went wrong");
     }
-  }
+  };
 
   return (
     <DataContext.Provider
@@ -142,7 +148,7 @@ const DataProvider = ({ children }) => {
         getPendingAppointments,
         getApprovedAppointments,
         getRejectedAppointments,
-        delIt
+        delIt,
       }}
     >
       {children}

@@ -1,5 +1,4 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
 import Dashboard from "../common/Dashboard";
 import { useAuth } from "../../context/AuthContext";
 import Appointments from "./Appointments";

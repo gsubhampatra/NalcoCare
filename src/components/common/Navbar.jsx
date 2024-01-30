@@ -10,11 +10,11 @@ const menuItems = [
   },
   {
     name: "About",
-    href: "#about",
+    href: "/about",
   },
   {
-    name: "Contact",
-    href: "#contact",
+    name: "Services",
+    href: "/services",
   },
 ];
 

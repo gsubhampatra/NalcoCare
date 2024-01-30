@@ -8,8 +8,13 @@ import { useAuth } from "../../context/AuthContext";
 
 const AllDoctors = () => {
   const [loading, setLoading] = useState(false);
-  const { doctors, fetchDoctor, getDoctorfromEmail, getPatientfromEmail,delIt } =
-    useData();
+  const {
+    doctors,
+    fetchDoctor,
+    getDoctorfromEmail,
+    getPatientfromEmail,
+    delIt,
+  } = useData();
   const { user } = useAuth();
   const [openModal, setOpenModal] = useState(false);
   const [slots, setSlots] = useState([]);
@@ -91,7 +96,7 @@ const AllDoctors = () => {
               key={doctor.id}
               className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
             >
-              <div class="bg-white shadow-md rounded-lg p-4">
+              <div className="bg-white shadow-md rounded-lg p-4">
                 <div>
                   <div className="flex flex-row items-center space-x-4">
                     <img
@@ -134,7 +139,7 @@ const AllDoctors = () => {
                           </h1>
                         )}
                       </div>
-                      {user.role === "admin" && (
+                      {user?.role === "admin" && (
                         <button
                           onClick={() => delIt(doctor._id, "doctor")}
                           className="text-white bg-gradient-to-r from-pink-500 to-red-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center me-2 mb-2"

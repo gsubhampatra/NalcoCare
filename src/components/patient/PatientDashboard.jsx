@@ -2,7 +2,7 @@ import React from "react";
 import Dashboard from "../common/Dashboard";
 import { useAuth } from "../../context/AuthContext";
 
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Button } from "flowbite-react";
 
 const PatientDashboard = () => {
@@ -45,19 +45,23 @@ const PatientDashboard = () => {
           <h1 className="font-semibold text-md">
             <span className="mr-2 text-slate-500">Role:</span> {user?.role}
           </h1>
-          <Button.Group outline >
-            <Button
-              className="border-2 hover:border-sky-400"
-              gradientDuoTone="tealToLime"
-            >
-              Appointments
-            </Button>
-            <Button
-              gradientDuoTone="tealToLime"
-              className="border-2 hover:border-sky-400"
-            >
-              Book Appointment
-            </Button>
+          <Button.Group outline>
+            <Link to="/patient/appointments">
+              <Button
+                className="border-2 hover:border-sky-400"
+                gradientDuoTone="tealToLime"
+              >
+                Appointments
+              </Button>
+            </Link>
+            <Link to="/patient/book-appointment">
+              <Button
+                gradientDuoTone="tealToLime"
+                className="border-2 hover:border-sky-400"
+              >
+                Book Appointment
+              </Button>
+            </Link>
           </Button.Group>
         </div>
 

@@ -77,9 +77,9 @@ const CreateAppointment = () => {
         onClick={() => {
           fetchDoctor();
         }}
-        className="px-4 py-2 mt-4 text-sm font-semibold text-white bg-black rounded-md shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-      >
-        getAllDoctors
+        className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        >
+        All Doctors
       </button>
       <div className="grid grid-cols-1 md:grid-cols-2">
         {doctors.map((doctor) => {

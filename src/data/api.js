@@ -102,7 +102,7 @@ const getDoctorAppointments = async (id) => {
     const headers = getHeaders();
 
     const res = await axios.get(`${API}/doctor/get-doctor-appointments/${id}`, {
-      headers,
+      headers: headers,
     });
     console.log(res.data);
     if (!res.data?.success) {
@@ -120,9 +120,7 @@ const getPatientAppointments = async (id) => {
 
     const res = await axios.get(
       `${API}/patient/get-patient-appointments/${id}`,
-      {
-        headers,
-      }
+      { headers: headers }
     );
     console.log(res.data);
     if (!res.data?.success) {
@@ -180,7 +178,7 @@ const createAppointment = async (appointment) => {
     const res = await axios.post(
       `${API}/patient/create-appoinment`,
       appointment,
-      { headers }
+      { headers: headers }
     );
     console.log(res.data);
     if (res.data.success === false) {
@@ -209,8 +207,8 @@ const deleteEle = async (id, ele) => {
     const headers = getHeaders();
     const res = await axios.delete(
       `${API}/admin/delete-${ele}/${id}`,
-      {},
-      { headers }
+
+      { headers: headers }
     );
     console.log(res.data);
     return res.data;

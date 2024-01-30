@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
 import PatientAppointments from "./components/patient/PatientAppointment";
 import CreateAppointment from "./components/patient/CreateAppointment";
+import { Services } from "./components/common/Services";
 
 function App() {
   const { user } = useAuth();
@@ -22,6 +23,8 @@ function App() {
         <Toaster />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<Services />} />
           {user ? (
             <>
               <Route path="/patient" element={<PatientDashboard />} >

@@ -25,7 +25,11 @@ const Appointments = ({ user }) => {
       toast.success(data?.message || "Appointments Fetched Successfully");
     } catch (error) {
       toast.error(error.message);
+      setIsLoading(false);
     }
+  };
+  const allApps = () => {
+    setApps(appointments);
   };
   const ApprovedApps = () => {
     setApps(getApprovedAppointments());
@@ -48,20 +52,18 @@ const Appointments = ({ user }) => {
       >
         Refresh
       </button>
-      <button
-        onClick={ApprovedApps}
-        className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-      >
-        Approved Appointments
-      </button>
+      <Button.Group outline>
+        <Button onClick={allApps} gradientDuoTone="tealToLime">
+          All Appointments
+        </Button>
+        <Button onClick={ApprovedApps} gradientDuoTone="purpleToBlue">
+          Approved Appointments
+        </Button>
 
-      <button
-        onClick={RejectedApps}
-        className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-      >
-        Rejected Appointments
-      </button>
-
+        <Button onClick={RejectedApps} gradientDuoTone="pinkToOrange">
+          Rejected Appointments
+        </Button>
+      </Button.Group>
       {isLoading ? (
         <>
           <Loading />

@@ -33,36 +33,28 @@ const PatientAppointments = () => {
   const RejectedApps = () => {
     setApps(getRejectedAppointments());
   };
+  const allApps = () => {
+    setApps(appointments);
+  };
   useEffect(() => {
     getAppointments();
   }, []);
   return (
     <>
       <h1>All Appointments</h1>
-      <div className="flex flex-row md:flex-col">
-        <button
-          onClick={() => {
-            getAppointments();
-          }}
-          className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          Refresh
-        </button>
-        <button
-          onClick={ApprovedApps}
-          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
+
+      <Button.Group outline>
+        <Button onClick={allApps} gradientDuoTone="tealToLime">
+          All Appointments
+        </Button>
+        <Button onClick={ApprovedApps} gradientDuoTone="purpleToBlue">
           Approved Appointments
-        </button>
+        </Button>
 
-        <button
-          onClick={RejectedApps}
-          className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
+        <Button onClick={RejectedApps} gradientDuoTone="pinkToOrange">
           Rejected Appointments
-        </button>
-      </div>
-
+        </Button>
+      </Button.Group>
       {isLoading ? (
         <>
           <Loading />

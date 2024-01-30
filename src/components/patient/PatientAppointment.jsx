@@ -4,8 +4,10 @@ import { Button } from "flowbite-react";
 import { approveAppointment, rejectAppointment } from "../../data/api";
 import { Loading } from "../common";
 import { AppointmentCard } from "../admin/AllAppointments";
+import { useAuth } from "../../context/AuthContext";
 
-const PatientAppointments = ({ user }) => {
+const PatientAppointments = () => {
+  const { user } = useAuth();
   const {
     appointments,
     fetchPatientAppointment,

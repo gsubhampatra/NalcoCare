@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useData } from "../../context/DataContext";
-import { Button } from "flowbite-react";
 import { approveAppointment, rejectAppointment } from "../../data/api";
 import { Loading } from "../common";
 import toast from "react-hot-toast";
+import { Card } from "flowbite-react";
+import { useAuth } from "../../context/AuthContext";
 
 const AllAppointments = () => {
   const { appointments, fetchAppointment } = useData();
@@ -41,22 +42,30 @@ const AllAppointments = () => {
       setIsLoading(false);
       toast.success(data?.message || "Appointments Fetched Successfully");
     } catch (error) {
+      setIsLoading(false);
       toast.error(error.message);
       console.log(error.message);
     }
   };
   useEffect(() => {
-    getAppointments();
+    if (appointments.length === 0) {
+      getAppointments();
+      setIsLoading(false);
+    }
   }, []);
   return (
     <>
       <h1>All Appointments</h1>
-      <button
-        onClick={getAppointments}
-        className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-      >
-        Refresh
-      </button>
+      <div className="flex justify-center">
+        <button
+          onClick={() => {
+            getAppointments();
+          }}
+          className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center me-2 mb-2"
+        >
+          Refresh
+        </button>
+      </div>
 
       {isLoading ? (
         <>
@@ -82,59 +91,71 @@ export default AllAppointments;
 
 export function AppointmentCard({ appointment, handleApprove, handleReject }) {
   const { _id, patient, doctor, date, slot, details, status } = appointment;
-
+  const {delIt} = useData();
+  const { user } = useAuth();
   return (
-    <div className="max-w-md overflow-hidden rounded shadow-md bg-sky-50 border-cyan-100">
-      <div className="p-4">
-        <h2 className="mb-2 text-lg font-bold">{patient.name}</h2>
-
-        <div className="mb-2">
-          <label className="text-sm text-gray-600">Doctor:</label>
-          <p className="text-gray-800">{doctor.name}</p>
-        </div>
-
-        <div className="mb-2">
-          <label className="text-sm text-gray-600">Date:</label>
-          <p className="text-gray-800">{date}</p>
-        </div>
-
-        <div className="mb-2">
-          <label className="text-sm text-gray-600">Time:</label>
-          <p className="text-gray-800">{slot}</p>
-        </div>
-
-        <div className="mb-4">
-          <label className="text-sm text-gray-600">Details:</label>
-          <p className="text-gray-800">{details}</p>
-        </div>
-
-        {status === "pending" ? (
-          <div className="flex justify-end space-x-2">
-            <button
-              onClick={() => handleApprove(_id)}
-              className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700"
-            >
-              Approve
-            </button>
-
-            <button
-              onClick={() => handleReject(_id)}
-              className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
-            >
-              Reject
-            </button>
-          </div>
-        ) : (
-          <div
-            className={`text-${
-              status === "approved" ? "green" : "red"
-            }-500 font-bold mb-2`}
+    <Card
+      className="max-w-sm "
+      imgSrc="https://www.shutterstock.com/image-vector/doctor-appointment-request-icon-on-260nw-1385436422.jpg"
+      horizontal
+    >
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        <span className="font-bold">Patient Name:</span> {patient?.name}
+      </p>
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        <span className="font-bold">Doctor Name:</span> {doctor?.name}
+      </p>
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        <span className="font-bold">Date:</span> {date}
+      </p>
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        <span className="font-bold">Slot:</span> {slot}
+      </p>
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        <span className="font-bold">Details:</span> {details}
+      </p>
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        <span className="font-bold">Status:</span>{" "}
+        {
+          <span
+            className={`${
+              status === "pending"
+                ? "bg-yellow-200 text-yellow-800"
+                : status === "approved"
+                ? "bg-green-200 text-green-800"
+                : "bg-red-200 text-red-800"
+            } px-2 py-1 rounded-full`}
           >
-            <label className="text-sm text-gray-600">Status:</label>
-            <span>{status}</span>
-          </div>
-        )}
-      </div>
-    </div>
+            {status}
+          </span>
+        }
+      </p>
+      {
+        user.role === "admin" && (  
+          <button
+          onClick={() => delIt(_id,"appointment")}
+          className="text-white bg-gradient-to-r from-pink-500 to-red-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center me-2 mb-2"
+        >
+          Delete
+        </button>
+        )
+      }
+      {status === "pending" && user.role !== "patient" && (
+        <div className="flex justify-center">
+          <button
+            onClick={() => handleApprove(_id)}
+            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Approve
+          </button>
+          <button
+            onClick={() => handleReject(_id)}
+            className="text-white bg-gradient-to-r from-cyan-500 to-red-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Reject
+          </button>
+        </div>
+      )}
+    </Card>
   );
 }

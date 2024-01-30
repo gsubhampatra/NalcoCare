@@ -10,6 +10,8 @@ import AllAppointments from "./components/admin/AllAppointments";
 import AllPatients from "./components/admin/AllPatients";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/AuthContext";
+import PatientAppointments from "./components/patient/PatientAppointment";
+import CreateAppointment from "./components/patient/CreateAppointment";
 
 function App() {
   const { user } = useAuth();
@@ -22,7 +24,10 @@ function App() {
           <Route path="/" element={<Home />} />
           {user ? (
             <>
-              <Route path="/patient" element={<PatientDashboard />} />
+              <Route path="/patient" element={<PatientDashboard />} >
+                <Route path="appointments" element={<PatientAppointments />} />
+                <Route path="book-appointment" element={<CreateAppointment />} />
+              </Route>
               <Route path="/doctor" element={<DoctorDashboard />} />
             </>
           ) : (

@@ -1,18 +1,19 @@
 import React from "react";
 import Dashboard from "../common/Dashboard";
 import { useAuth } from "../../context/AuthContext";
-import CreateAppointment from "./CreateAppointment";
-import PatientAppointments from "./PatientAppointment";
+
+import { Outlet } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 const PatientDashboard = () => {
   const items = [
     {
       name: "All Appointments",
-      path: "/patient/#appointments",
+      path: "/patient/appointments",
     },
     {
       name: "Book Appointments",
-      path: "/patient/#bookappointment",
+      path: "/patient/book-appointment",
     },
   ];
 
@@ -34,15 +35,34 @@ const PatientDashboard = () => {
         <h1 className="text-2xl font-semibold text-center">
           Patient Dashboard
         </h1>
+        <div>
+          <h1 className="font-semibold text-md">
+            <span className="mr-2 text-slate-500">Name:</span> {user?.name}
+          </h1>
+          <h1 className="font-semibold text-md">
+            <span className="mr-2 text-slate-500">Email:</span> {user?.email}
+          </h1>
+          <h1 className="font-semibold text-md">
+            <span className="mr-2 text-slate-500">Role:</span> {user?.role}
+          </h1>
+          <Button.Group outline >
+            <Button
+              className="border-2 hover:border-sky-400"
+              gradientDuoTone="tealToLime"
+            >
+              Appointments
+            </Button>
+            <Button
+              gradientDuoTone="tealToLime"
+              className="border-2 hover:border-sky-400"
+            >
+              Book Appointment
+            </Button>
+          </Button.Group>
+        </div>
+
         <div className="p-4 space-y-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-          <div id="bookappointment">
-            <h1 className="text-xl font-semibold">Book Appointment</h1>
-            <CreateAppointment user={user} />
-          </div>
-          <div id="appointments">
-            <h1 className="text-xl font-semibold">Your Appointments</h1>
-            <PatientAppointments user={user} />
-          </div>
+          <Outlet />
         </div>
       </div>
     </>

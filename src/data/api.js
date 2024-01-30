@@ -139,9 +139,11 @@ const approveAppointment = async (Id) => {
   try {
     const headers = getHeaders();
 
-    const res = await axios.post(`${API}/doctor/approve-appointment/${Id}`, {
-      headers,
-    });
+    const res = await axios.post(
+      `${API}/doctor/approve-appointment/${Id}`,
+      {},
+      { headers }
+    );
     console.log(res.data);
     if (!res.data?.success) {
       throw new Error(res.data.message);
@@ -155,9 +157,11 @@ const approveAppointment = async (Id) => {
 const rejectAppointment = async (Id) => {
   try {
     const headers = getHeaders();
-    const res = await axios.post(`${API}/doctor/reject-appointment/${Id}`, {
-      headers,
-    });
+    const res = await axios.post(
+      `${API}/doctor/reject-appointment/${Id}`,
+      {},
+      { headers }
+    );
     console.log(res.data);
     if (!res.data?.success) {
       throw new Error(res.data.message);
@@ -175,15 +179,40 @@ const createAppointment = async (appointment) => {
 
     const res = await axios.post(
       `${API}/patient/create-appoinment`,
-      {
-        ...appointment,
-      },
+      appointment,
       { headers }
     );
     console.log(res.data);
-    if (!res.data?.success) {
+    if (res.data.success === false) {
       throw new Error(res.data.message);
     }
+    return res.data;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+};
+
+const getUser = async (email, role) => {
+  try {
+    const { data } = await axios.get(`${API}/${role}/get-${role}/${email}`);
+    console.log(data);
+    return data.user;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const deleteEle = async (id, ele) => {
+  try {
+    const headers = getHeaders();
+    const res = await axios.delete(
+      `${API}/admin/delete-${ele}/${id}`,
+      {},
+      { headers }
+    );
+    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error.message);
@@ -202,4 +231,6 @@ export {
   getAllDoctors,
   getDoctorAppointments,
   getPatientAppointments,
+  getUser,
+  deleteEle,
 };

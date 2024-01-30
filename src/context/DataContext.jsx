@@ -5,6 +5,9 @@ import {
   getAllPatients,
   getAllAppointments,
   getDoctorAppointments,
+  getUser,
+  getPatientAppointments,
+  deleteEle
 } from "../data/api";
 import toast from "react-hot-toast";
 
@@ -20,7 +23,7 @@ const DataProvider = ({ children }) => {
       const doctorsData = await getAllDoctors();
 
       setDoctors(doctorsData.doctors);
-
+      toast.success(doctorsData.message || "Doctors fetched successfully");
       return doctorsData;
     } catch (error) {
       console.error(error);
@@ -68,7 +71,7 @@ const DataProvider = ({ children }) => {
   };
   const fetchPatientAppointment = async (id) => {
     try {
-      const appointmentsData = await getDoctorAppointments(id);
+      const appointmentsData = await getPatientAppointments(id);
 
       setAppointments(appointmentsData.appointments);
 
@@ -81,15 +84,15 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  const getPatientfromEmail = (email) => {
-    const patient = patients.find((patient) => patient.email === email);
+  const getPatientfromEmail = async (email) => {
+    const patient = await getUser(email, "patient");
     if (patient === undefined) {
       throw new Error("Patient not found");
     }
     return patient._id;
   };
-  const getDoctorfromEmail = (email) => {
-    const doctor = doctors.find((doctor) => doctor.email === email);
+  const getDoctorfromEmail = async (email) => {
+    const doctor = await getUser(email, "doctor");
     if (doctor === undefined) {
       throw new Error("Doctor not found");
     }
@@ -112,6 +115,17 @@ const DataProvider = ({ children }) => {
     );
   };
 
+  const delIt = async(id,ele)=>{
+    try {
+      const item = await deleteEle(id,ele);
+      toast.success(item.message || "Deleted Successfully");
+       console.log(item);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Something went wrong");
+    }
+  }
+
   return (
     <DataContext.Provider
       value={{
@@ -128,6 +142,7 @@ const DataProvider = ({ children }) => {
         getPendingAppointments,
         getApprovedAppointments,
         getRejectedAppointments,
+        delIt
       }}
     >
       {children}

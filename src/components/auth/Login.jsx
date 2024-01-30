@@ -22,16 +22,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const data = await login(user);
-    if (data.error) {
-      toast.error("Invalid credentials");
+    try {
+      setLoading(true);
+      const data = await login(user);
       setLoading(false);
-      return;
+      toast.success("Login successful");
+      navigate(`/${data?.role}`);
+    } catch (error) {
+      setLoading(false);
+      toast.error(error?.message);
     }
-    setLoading(false);
-    toast.success("Login successful");
-    navigate(`/${data?.role}`);
   };
 
   if (loading) {

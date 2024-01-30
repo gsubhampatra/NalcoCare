@@ -3,24 +3,56 @@ import { useData } from "../../context/DataContext";
 import { Button } from "flowbite-react";
 import { approveAppointment, rejectAppointment } from "../../data/api";
 import { Loading } from "../common";
+import toast from "react-hot-toast";
 
 const AllAppointments = () => {
   const { appointments, fetchAppointment } = useData();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (appointments.length <= 0) {
-      fetchAppointment();
+  const approveApp = async (id) => {
+    try {
+      setIsLoading(true);
+      const data = await approveAppointment(id);
       setIsLoading(false);
-    } else {
+      toast.success(data?.message || "Appointment Approved Successfully");
+      getAppointments();
+    } catch (error) {
       setIsLoading(false);
+      toast.error(error.message);
     }
+  };
+  const rejectApp = async (id) => {
+    try {
+      setIsLoading(true);
+      const data = await rejectAppointment(id);
+      setIsLoading(false);
+      toast.success(data?.message || "Appointment Rejected Successfully");
+      getAppointments();
+    } catch (error) {
+      setIsLoading(false);
+      toast.error(error.message);
+    }
+  };
+
+  const getAppointments = async () => {
+    try {
+      setIsLoading(true);
+      const data = await fetchAppointment();
+      setIsLoading(false);
+      toast.success(data?.message || "Appointments Fetched Successfully");
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    getAppointments();
   }, []);
   return (
     <>
       <h1>All Appointments</h1>
       <button
-        onClick={fetchAppointment}
+        onClick={getAppointments}
         className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
       >
         Refresh
@@ -36,8 +68,8 @@ const AllAppointments = () => {
             <AppointmentCard
               key={appointment._id}
               appointment={appointment}
-              handleApprove={approveAppointment}
-              handleReject={rejectAppointment}
+              handleApprove={approveApp}
+              handleReject={rejectApp}
             />
           ))}
         </div>

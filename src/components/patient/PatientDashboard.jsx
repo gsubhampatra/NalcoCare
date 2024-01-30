@@ -8,7 +8,11 @@ const PatientDashboard = () => {
   const items = [
     {
       name: "All Appointments",
-      path: "/patient/all-appointments",
+      path: "/patient/#appointments",
+    },
+    {
+      name: "Book Appointments",
+      path: "/patient/#bookappointment",
     },
   ];
 
@@ -30,9 +34,15 @@ const PatientDashboard = () => {
         <h1 className="text-2xl font-semibold text-center">
           Patient Dashboard
         </h1>
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-          <CreateAppointment user={user} />
-          <PatientAppointments user={user} />
+        <div className="p-4 space-y-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+          <div id="bookappointment">
+            <h1 className="text-xl font-semibold">Book Appointment</h1>
+            <CreateAppointment user={user} />
+          </div>
+          <div id="appointments">
+            <h1 className="text-xl font-semibold">Your Appointments</h1>
+            <PatientAppointments user={user} />
+          </div>
         </div>
       </div>
     </>

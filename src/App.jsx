@@ -9,8 +9,10 @@ import AllDoctors from "./components/admin/AllDoctors";
 import AllAppointments from "./components/admin/AllAppointments";
 import AllPatients from "./components/admin/AllPatients";
 import { Toaster } from "react-hot-toast";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
+  const { user } = useAuth();
   return (
     <>
       <BrowserRouter>
@@ -18,13 +20,18 @@ function App() {
         <Toaster />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/register-doctor" element={<RegisterDoctor />} />
-          <Route path="/patient">
-            <Route path="" element={<PatientDashboard />} />
-          </Route>
-          <Route path="/doctor" element={<DoctorDashboard />} />
+          {user ? (
+            <>
+              <Route path="/patient" element={<PatientDashboard />} />
+              <Route path="/doctor" element={<DoctorDashboard />} />
+            </>
+          ) : (
+            <>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/register-doctor" element={<RegisterDoctor />} />
+            </>
+          )}
 
           <Route path="/admin/*" element={<AdminDashboard />}>
             <Route path="all-doctors" element={<AllDoctors />} />

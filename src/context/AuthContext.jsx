@@ -11,13 +11,13 @@ const AuthProvider = ({ children }) => {
 
   const login = async (userData) => {
     try {
-      const  loggedInUser  = await loginUser(userData);
+      const loggedInUser = await loginUser(userData);
       setUser(loggedInUser);
       localStorage.setItem("user", JSON.stringify(loggedInUser));
       return loggedInUser;
     } catch (error) {
       console.error(error);
-      return error;
+      throw error;
     }
   };
 
@@ -29,8 +29,8 @@ const AuthProvider = ({ children }) => {
 
       return registeredUser;
     } catch (error) {
-      console.error(error);
-      return error;
+      console.log(error);
+      throw error;
     }
   };
 

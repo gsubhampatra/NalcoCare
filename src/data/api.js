@@ -14,20 +14,26 @@ const getHeaders = () => {
 
 const registerUser = async (user) => {
   try {
-    const response = await axios.post(`${API}/auth/register`, { ...user });
-    console.log(response.data);
-    return response.data.user;
+    const res = await axios.post(`${API}/auth/register`, { ...user });
+    console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
+    return res.data.user;
   } catch (error) {
     console.error(error);
-    return error.message;
+    throw error;
   }
 };
 
 const loginUser = async (userdata) => {
   try {
-    const response = await axios.post(`${API}/auth/login`, { ...userdata });
-    console.log(response.data);
-    const { token, user } = response.data;
+    const res = await axios.post(`${API}/auth/login`, { ...userdata });
+    console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
+    const { token, user } = res.data;
     localStorage.setItem("token", token);
     if (user.role === "patient" || user.role === "doctor") {
       const { data } = await axios.get(
@@ -39,7 +45,7 @@ const loginUser = async (userdata) => {
     return user;
   } catch (error) {
     console.log(error);
-    return error.massage;
+    throw error;
   }
 };
 
@@ -48,10 +54,13 @@ const getAllDoctors = async () => {
     const headers = getHeaders();
     const res = await axios.get(`${API}/doctor/get-all-doctors`, { headers });
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 const getAllPatients = async () => {
@@ -59,11 +68,15 @@ const getAllPatients = async () => {
     const headers = getHeaders();
 
     const res = await axios.get(`${API}/patient/get-all-patients`, { headers });
+
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 
@@ -75,10 +88,13 @@ const getAllAppointments = async () => {
       headers,
     });
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 const getDoctorAppointments = async (id) => {
@@ -89,10 +105,13 @@ const getDoctorAppointments = async (id) => {
       headers,
     });
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 const getPatientAppointments = async (id) => {
@@ -106,10 +125,13 @@ const getPatientAppointments = async (id) => {
       }
     );
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 
@@ -121,10 +143,13 @@ const approveAppointment = async (Id) => {
       headers,
     });
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error);
+    throw error;
   }
 };
 const rejectAppointment = async (Id) => {
@@ -134,10 +159,13 @@ const rejectAppointment = async (Id) => {
       headers,
     });
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 
@@ -153,10 +181,13 @@ const createAppointment = async (appointment) => {
       { headers }
     );
     console.log(res.data);
+    if (!res.data?.success) {
+      throw new Error(res.data.message);
+    }
     return res.data;
   } catch (error) {
-    console.log(error.massage);
-    return error.massage;
+    console.log(error.message);
+    throw error;
   }
 };
 

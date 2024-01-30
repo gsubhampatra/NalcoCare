@@ -5,9 +5,9 @@ import { createAppointment } from "../../data/api";
 import { Loading } from "../common";
 import toast from "react-hot-toast";
 
-const CreateAppointment = ({user}) => {
+const CreateAppointment = ({ user }) => {
   const [loading, setLoading] = useState(false);
-  const { doctors, fetchDoctor, getDoctorfromEmail, getPatientfromEmail } =
+  const { doctors, fetchDoctor, getDoctorfromEmail, fetchAppointment } =
     useData();
   const [openModal, setOpenModal] = useState(false);
   const [slots, setSlots] = useState([]);
@@ -37,21 +37,28 @@ const CreateAppointment = ({user}) => {
   }
 
   const handleCreateAppointment = async () => {
-    const { doctorEmail, slot, date, details } = appointmentData;
-    const doctor = await getDoctorfromEmail(doctorEmail);
-    const appointment = {
-      doctorId: doctor._id,
-      patientId: user._id,
-      date,
-      slot,
-      details,
-    };
-    setLoading(true);
-    const data = await createAppointment(appointment);
-    console.log("Appointment details:", data);
-    setLoading(false);
-    toast.success("Appointment created successfully");
-    setOpenModal(false);
+    try {
+      const { doctorEmail, slot, date, details } = appointmentData;
+      const doctorId = await getDoctorfromEmail(doctorEmail);
+      const appointment = {
+        doctorId: doctorId,
+        patientId: user._id,
+        date,
+        slot,
+        details,
+      };
+      setLoading(true);
+      const data = await createAppointment(appointment);
+      console.log("Appointment details:", data.appointment);
+      await fetchAppointment();
+      setLoading(false);
+      toast.success(data.message || "Appointment created successfully");
+      setOpenModal(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast.error(error.message || "Something went wrong");
+    }
   };
 
   if (loading) {
@@ -80,10 +87,16 @@ const CreateAppointment = ({user}) => {
                 <h1 className="text-xl font-semibold">{doctor.name}</h1>
                 <p className="text-sm font-semibold">{doctor.specility}</p>
                 <p className="text-sm font-semibold">{doctor.email}</p>
+                {doctor.availability.length === 0 && (
+                  <span className="p-1 text-sm font-semibold text-red-600">
+                    Not available
+                  </span>
+                )}
               </div>
               <div>
                 <Button
                   gradientMonochrome="lime"
+                  {...(doctor.availability.length === 0 && { disabled: true })}
                   onClick={() => handleBookAppointment(doctor)}
                 >
                   Book Appointment
@@ -110,7 +123,6 @@ const CreateAppointment = ({user}) => {
                           id="patientEmail"
                           placeholder="name@company.com"
                           value={appointmentData.patientEmail}
-                        
                           required
                         />
                       </div>

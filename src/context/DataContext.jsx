@@ -6,7 +6,7 @@ import {
   getAllAppointments,
   getDoctorAppointments,
 } from "../data/api";
-
+import toast from "react-hot-toast";
 
 const DataContext = createContext();
 
@@ -21,10 +21,10 @@ const DataProvider = ({ children }) => {
 
       setDoctors(doctorsData.doctors);
 
-      return { doctors: doctorsData };
+      return doctorsData;
     } catch (error) {
       console.error(error);
-      throw error;
+      toast.error(error.message || "Something went wrong");
     }
   };
 
@@ -34,9 +34,11 @@ const DataProvider = ({ children }) => {
 
       setPatients(patientsData.patients);
 
-      return { patients: patientsData };
+      return patientsData;
     } catch (error) {
       console.error(error);
+      toast.error(error.message || "Something went wrong");
+
       throw error;
     }
   };
@@ -44,10 +46,8 @@ const DataProvider = ({ children }) => {
   const fetchAppointment = async () => {
     try {
       const appointmentsData = await getAllAppointments();
-
       setAppointments(appointmentsData.appointments);
-
-      return { appointments: appointmentsData };
+      return appointmentsData;
     } catch (error) {
       console.error(error);
       throw error;
@@ -59,9 +59,10 @@ const DataProvider = ({ children }) => {
 
       setAppointments(appointmentsData.appointments);
 
-      return { appointments: appointmentsData };
+      return appointmentsData;
     } catch (error) {
       console.error(error);
+      toast.error(error.message || "Something went wrong");
       throw error;
     }
   };
@@ -71,19 +72,27 @@ const DataProvider = ({ children }) => {
 
       setAppointments(appointmentsData.appointments);
 
-      return { appointments: appointmentsData };
+      return appointmentsData;
     } catch (error) {
       console.error(error);
+      toast.error(error.message || "Something went wrong");
+
       throw error;
     }
   };
 
   const getPatientfromEmail = (email) => {
     const patient = patients.find((patient) => patient.email === email);
+    if (patient === undefined) {
+      throw new Error("Patient not found");
+    }
     return patient._id;
   };
   const getDoctorfromEmail = (email) => {
     const doctor = doctors.find((doctor) => doctor.email === email);
+    if (doctor === undefined) {
+      throw new Error("Doctor not found");
+    }
     return doctor._id;
   };
 

@@ -8,9 +8,8 @@ const DoctorDashboard = () => {
   const items = [
     {
       name: "All Appointments",
-      path: "/doctor/all-appointments",
+      path: "/doctor",
     },
- 
   ];
 
   const { user } = useAuth();

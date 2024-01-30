@@ -8,7 +8,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   const { register } = useAuth();
-  const [userdata, setUserdata] = useState({});
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -27,13 +26,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const data = await register(user);
-    setUserdata(data);
-    setLoading(false);
-    setUser({});
-    toast.success("Registration successful");
-    navigate(`/${data.role}`);
+    try {
+      setLoading(true);
+      const data = await register(user);
+      setLoading(false);
+      setUser({});
+      toast.success("Registration successful");
+      navigate(`/${data.role}`);
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.message);
+    }
   };
   if (loading) {
     return (

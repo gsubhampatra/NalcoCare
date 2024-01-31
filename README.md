@@ -1,4 +1,4 @@
-# Medical Appointment System Documentation
+# Nalco Care Medical Appointment System 
 
 ## Overview
 
@@ -65,4 +65,4 @@ This project is a full-stack web application developed using the MERN stack (Mon
 
 ## Conclusion
 
-This Medical Appointment System provides an efficient and organized way for patients, doctors, and admins to interact with and manage appointments. The clear separation of roles ensures secure and controlled access to the system's functionalities.
+This Nalco Care Medical Appointment System provides an efficient and organized way for patients, doctors, and admins to interact with and manage appointments. The clear separation of roles ensures secure and controlled access to the system's functionalities.

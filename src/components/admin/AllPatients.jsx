@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 const AllPatients = () => {
   const { patients, fetchPatient, delIt } = useData();
   const { user } = useAuth();
+  
   useEffect(() => {
     if (patients.length === 0) {
       fetchPatient();
